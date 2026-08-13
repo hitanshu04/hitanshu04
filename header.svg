@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Terminal: whoami — Hitanshu Kumar Singh, Backend &amp; AI Engineer, open to work" width="1000" height="360" viewBox="0 0 1000 360" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace">
+  <title>Hitanshu Kumar Singh — Backend &amp; AI Engineer</title>
+  <desc>Self-hosted terminal header. All text is static and always visible; only the cursor animates, so it can never render blank.</desc>
+  <style>
+    .accent { fill: #3FB950; font-weight: 700; }
+    .cmd { fill: #e6edf3; font-weight: 600; }
+    .out { fill: #8b949e; }
+    .val { fill: #3FB950; font-weight: 700; }
+    .dim { fill: #6e7681; }
+    .bold { fill: #e6edf3; font-weight: 700; }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+    .cursor { animation: blink 1.1s steps(1, end) infinite; }
+  </style>
+
+  <rect width="1000" height="360" rx="12" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+  <rect width="1000" height="40" rx="12" fill="#161b22"/>
+  <rect y="20" width="1000" height="20" fill="#161b22"/>
+  <rect y="40" width="1000" height="2" fill="#3FB950"/>
+
+  <circle cx="24" cy="20" r="6" fill="#ff5f56"/>
+  <circle cx="44" cy="20" r="6" fill="#ffbd2e"/>
+  <circle cx="64" cy="20" r="6" fill="#27c93f"/>
+  <text x="500" y="26" font-size="13" text-anchor="middle" fill="#6e7681">hitanshu04@github: ~/profile — zsh</text>
+
+  <g font-size="16">
+    <text x="24" y="72"><tspan class="accent">$ </tspan><tspan class="cmd">whoami</tspan></text>
+    <text x="24" y="98"><tspan class="bold">Hitanshu Kumar Singh</tspan><tspan class="out"> — Backend &amp; AI Engineer</tspan></text>
+
+    <text x="24" y="124"><tspan class="accent">$ </tspan><tspan class="cmd">cat ~/.location.txt</tspan></text>
+    <text x="24" y="150"><tspan class="val">Bengaluru, India</tspan><tspan class="out"> · B.E. Information Science · </tspan><tspan class="out">'27</tspan></text>
+
+    <text x="24" y="176"><tspan class="accent">$ </tspan><tspan class="cmd">./proof.sh --top</tspan></text>
+    <text x="24" y="202"><tspan class="out">Meta PyTorch × Scaler Hackathon — </tspan><tspan class="val">Finalist</tspan><tspan class="out"> (top ~3% of 72K+ devs)</tspan></text>
+
+    <text x="24" y="228"><tspan class="accent">$ </tspan><tspan class="cmd">./stack --core</tspan></text>
+    <text x="24" y="254"><tspan class="out">Python · PyTorch · FastAPI · PostgreSQL · Docker · RAG/LLM-eval</tspan></text>
+
+    <text x="24" y="280"><tspan class="accent">$ </tspan><tspan class="cmd">./status</tspan></text>
+  </g>
+
+  <circle cx="30" cy="309" r="5" fill="#3FB950"/>
+  <text x="44" y="312" font-size="16" class="val">OPEN TO WORK — Backend &amp; AI Engineer internships</text>
+
+  <text x="24" y="338" font-size="16"><tspan class="accent">$ </tspan></text>
+  <rect class="cursor" x="42" y="320" width="10" height="17" fill="#3FB950"/>
+</svg>
