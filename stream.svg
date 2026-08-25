@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" width="1000" height="412" viewBox="0 0 1000 412" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" aria-label="Terminal: a live streaming run of detect-synth over an 8 kHz call, ending in a SUSPICIOUS verdict at p99 151 ms against a 500 ms budget">
+  <title>detect-synth — streaming a call at 8 kHz on CPU</title>
+  <desc>A recorded-style streaming session: waveform with a sweeping playhead, per-chunk scores, and a final verdict. All text renders even if animation is unavailable.</desc>
+  <style>
+    .cmd  { fill: #e6edf3; font-weight: 600; }
+    .out  { fill: #8b949e; }
+    .dim  { fill: #6e7681; }
+    .lbl  { fill: #e6edf3; font-weight: 700; }
+    .accent { fill: #3FB950; font-weight: 700; }
+    .val  { fill: #3FB950; font-weight: 700; }
+    .ok   { fill: #3FB950; font-weight: 700; }
+    .warn { fill: #d29922; font-weight: 700; }
+
+    /* Resting state is fully visible. The reveal only plays forward into it,
+       so a stripped or disabled animation leaves the card complete. */
+    .ln { opacity: 1; animation: reveal .45s ease-out backwards; }
+    @keyframes reveal { from { opacity: 0; transform: translateY(4px); }
+                         to   { opacity: 1; transform: translateY(0); } }
+
+    /* Same principle: scaleX(1) is the default, the sweep animates 0 -> 1. */
+    #sweep-rect { transform-origin: 24px 0; transform: scaleX(1);
+                   animation: sweep 4.2s linear infinite; }
+    @keyframes sweep { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    #playhead { animation: play 4.2s linear infinite; }
+    @keyframes play { from { transform: translateX(0); }
+                       to   { transform: translateX(950px); } }
+
+    .cursor { animation: blink 1.1s steps(1, end) infinite; }
+    @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+    /* Budget bar fills to its true value; default is the filled state. */
+    #budget-fill { transform-origin: 24px 0; transform: scaleX(1);
+                    animation: fill 1s ease-out .9s backwards; }
+    @keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ln, #sweep-rect, #playhead, .cursor, #budget-fill { animation: none; }
+    }
+  </style>
+
+  <defs>
+    <g id="wave">
+      <rect x="24" y="94" width="10" height="4" rx="2"/>
+      <rect x="40" y="93" width="10" height="6" rx="2"/>
+      <rect x="56" y="94" width="10" height="4" rx="2"/>
+      <rect x="72" y="92" width="10" height="8" rx="2"/>
+      <rect x="88" y="93" width="10" height="6" rx="2"/>
+      <rect x="104" y="88" width="10" height="16" rx="2"/>
+      <rect x="120" y="82" width="10" height="28" rx="2"/>
+      <rect x="136" y="74" width="10" height="44" rx="2"/>
+      <rect x="152" y="68" width="10" height="56" rx="2"/>
+      <rect x="168" y="66" width="10" height="60" rx="2"/>
+      <rect x="184" y="70" width="10" height="52" rx="2"/>
+      <rect x="200" y="76" width="10" height="40" rx="2"/>
+      <rect x="216" y="72" width="10" height="48" rx="2"/>
+      <rect x="232" y="67" width="10" height="58" rx="2"/>
+      <rect x="248" y="71" width="10" height="50" rx="2"/>
+      <rect x="264" y="86" width="10" height="20" rx="2"/>
+      <rect x="280" y="90" width="10" height="12" rx="2"/>
+      <rect x="296" y="92" width="10" height="8" rx="2"/>
+      <rect x="312" y="89" width="10" height="14" rx="2"/>
+      <rect x="328" y="80" width="10" height="32" rx="2"/>
+      <rect x="344" y="72" width="10" height="48" rx="2"/>
+      <rect x="360" y="66" width="10" height="60" rx="2"/>
+      <rect x="376" y="68" width="10" height="56" rx="2"/>
+      <rect x="392" y="74" width="10" height="44" rx="2"/>
+      <rect x="408" y="70" width="10" height="52" rx="2"/>
+      <rect x="424" y="65" width="10" height="62" rx="2"/>
+      <rect x="440" y="69" width="10" height="54" rx="2"/>
+      <rect x="456" y="77" width="10" height="38" rx="2"/>
+      <rect x="472" y="73" width="10" height="46" rx="2"/>
+      <rect x="488" y="67" width="10" height="58" rx="2"/>
+      <rect x="504" y="75" width="10" height="42" rx="2"/>
+      <rect x="520" y="88" width="10" height="16" rx="2"/>
+      <rect x="536" y="91" width="10" height="10" rx="2"/>
+      <rect x="552" y="93" width="10" height="6" rx="2"/>
+      <rect x="568" y="90" width="10" height="12" rx="2"/>
+      <rect x="584" y="82" width="10" height="28" rx="2"/>
+      <rect x="600" y="74" width="10" height="44" rx="2"/>
+      <rect x="616" y="68" width="10" height="56" rx="2"/>
+      <rect x="632" y="64" width="10" height="64" rx="2"/>
+      <rect x="648" y="70" width="10" height="52" rx="2"/>
+      <rect x="664" y="76" width="10" height="40" rx="2"/>
+      <rect x="680" y="71" width="10" height="50" rx="2"/>
+      <rect x="696" y="66" width="10" height="60" rx="2"/>
+      <rect x="712" y="72" width="10" height="48" rx="2"/>
+      <rect x="728" y="78" width="10" height="36" rx="2"/>
+      <rect x="744" y="74" width="10" height="44" rx="2"/>
+      <rect x="760" y="69" width="10" height="54" rx="2"/>
+      <rect x="776" y="73" width="10" height="46" rx="2"/>
+      <rect x="792" y="79" width="10" height="34" rx="2"/>
+      <rect x="808" y="89" width="10" height="14" rx="2"/>
+      <rect x="824" y="92" width="10" height="8" rx="2"/>
+      <rect x="840" y="93" width="10" height="6" rx="2"/>
+      <rect x="856" y="91" width="10" height="10" rx="2"/>
+      <rect x="872" y="84" width="10" height="24" rx="2"/>
+      <rect x="888" y="78" width="10" height="36" rx="2"/>
+      <rect x="904" y="72" width="10" height="48" rx="2"/>
+      <rect x="920" y="76" width="10" height="40" rx="2"/>
+      <rect x="936" y="81" width="10" height="30" rx="2"/>
+      <rect x="952" y="87" width="10" height="18" rx="2"/>
+      <rect x="968" y="91" width="10" height="10" rx="2"/>
+    </g>
+    <clipPath id="sweep">
+      <rect id="sweep-rect" x="24" y="40" width="960" height="120"/>
+    </clipPath>
+  </defs>
+
+  <rect width="1000" height="412" rx="12" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+  <rect width="1000" height="40" rx="12" fill="#161b22"/>
+  <rect y="20" width="1000" height="20" fill="#161b22"/>
+  <rect y="40" width="1000" height="2" fill="#3FB950"/>
+
+  <circle cx="24" cy="20" r="6" fill="#ff5f56"/>
+  <circle cx="44" cy="20" r="6" fill="#ffbd2e"/>
+  <circle cx="64" cy="20" r="6" fill="#27c93f"/>
+  <text x="500" y="26" font-size="13" text-anchor="middle" fill="#6e7681">hitanshu04@github: ~/detect-synth — streaming 8 kHz</text>
+
+  <!-- waveform: dim baseline, accent copy revealed by the sweeping clip -->
+  <use href="#wave" fill="#30363d"/>
+  <g clip-path="url(#sweep)"><use href="#wave" fill="#3FB950"/></g>
+  <rect id="playhead" x="24" y="56" width="2" height="80" fill="#e6edf3" opacity=".55"/>
+
+  <g font-size="15">
+      <text class="ln" style="animation-delay:0.15s" x="24" y="172"><tspan class="accent">$ </tspan><tspan class="cmd">./detect-synth --stream call.wav --rate 8000</tspan></text>
+      <text class="ln" style="animation-delay:0.7s" x="24" y="200"><tspan class="dim">[init ]  </tspan><tspan class="out">LFCC-LCNN  d42 + d62 fusion · </tspan><tspan class="out">242,177 params · cpu</tspan></text>
+      <text class="ln" style="animation-delay:1.05s" x="24" y="224"><tspan class="dim">[vad  ]  </tspan><tspan class="out">speech detected @ 0.42s · gating silence</tspan></text>
+      <text class="ln" style="animation-delay:1.4s" x="24" y="248"><tspan class="dim">[chunk]  </tspan><tspan class="out">018/041   score </tspan><tspan class="val">0.24</tspan><tspan class="out">    12 ms</tspan></text>
+      <text class="ln" style="animation-delay:1.7s" x="24" y="272"><tspan class="dim">[chunk]  </tspan><tspan class="out">041/041   score </tspan><tspan class="val">0.31</tspan><tspan class="out">    13 ms</tspan></text>
+      <text class="ln" style="animation-delay:2.15s" x="24" y="308"><tspan class="lbl">verdict  </tspan><tspan class="warn">SUSPICIOUS</tspan><tspan class="out">  ·  call mean 0.2543 over 41 chunks</tspan></text>
+      <text class="ln" style="animation-delay:2.45s" x="24" y="332"><tspan class="lbl">latency  </tspan><tspan class="out">p50 </tspan><tspan class="val">57 ms</tspan><tspan class="out">  ·  p99 </tspan><tspan class="val">151 ms</tspan><tspan class="out">  ·  budget 500 ms  </tspan><tspan class="ok">OK</tspan></text>
+  </g>
+
+  <!-- p99 against the real-time budget, drawn to scale -->
+  <rect x="24" y="352" width="476" height="8" rx="4" fill="#21262d"/>
+  <rect id="budget-fill" x="24" y="352" width="144" height="8" rx="4" fill="#3FB950"/>
+  <text x="516" y="360" font-size="13">
+    <tspan class="out">p99 uses </tspan><tspan class="val">30%</tspan><tspan class="out"> of the 500 ms real-time budget</tspan>
+  </text>
+
+  <text x="24" y="392" font-size="15"><tspan class="accent">$ </tspan></text>
+  <rect class="cursor" x="42" y="378" width="9" height="16" fill="#3FB950"/>
+</svg>
