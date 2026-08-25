@@ -112,18 +112,9 @@ The two models fail on *disjoint* attacks, which is the reason fusion works rath
 
 <br/>
 
-```mermaid
-flowchart LR
-  A["reset(seed)"] --> B["task + schema"]
-  B --> C["agent emits SQL"]
-  C --> D{"SQLite authorizer"}
-  D -- denied --> E["reward −1.0"]
-  D -- allowed --> F["rows"]
-  F --> C
-  C --> G["submit answer"]
-  G --> H{"grader"}
-  H --> I["final score"]
-```
+<p align="center">
+  <img src="agents.svg" loading="lazy" width="96%" alt="Episode loop: a seeded reset hands the agent a task, every query passes the SQLite authorizer, and the grader scores the submitted answer"/>
+</p>
 
 **[SQLGym](https://github.com/hitanshu04/openenv-sql-analyst)** — a containerized **OpenEnv-spec** (Meta PyTorch × Hugging Face) RL environment that grades LLM data-analyst agents on SQL business questions. Selected **top ~3% of 72,000+** at the Meta PyTorch OpenEnv × Scaler hackathon.
 
@@ -146,18 +137,9 @@ Both are now closed at the layer that owns the guarantee — a **SQLite authoriz
 
 <br/>
 
-```mermaid
-flowchart LR
-  A["support ticket"] --> B["hybrid retrieve"]
-  B --> C["vector · ChromaDB"]
-  B --> D["lexical · BM25"]
-  C --> E(("fuse"))
-  D --> E
-  E --> F["LLM drafts answer"]
-  F --> G{"adversarial critic"}
-  G -- ungrounded --> H["blocked"]
-  G -- grounded --> I["response"]
-```
+<p align="center">
+  <img src="retrieval.svg" loading="lazy" width="96%" alt="A ticket fans out to vector and lexical retrieval, fuses, drafts an answer with an LLM, then an adversarial critic either passes it or blocks it as ungrounded"/>
+</p>
 
 **[Orchestrate Agent](https://github.com/hitanshu04/hackerrank-orchestrate-agent)** — autonomous support-triage agent on an **8-layer DAG**, built for the HackerRank Orchestrate Hackathon. Hybrid retrieval (vector + BM25) feeds an LLM, then a second **adversarial-critic** pass blocks answers that aren't traceable to the corpus → **93% groundedness** across **772 documents**.
 
@@ -172,18 +154,9 @@ flowchart LR
 
 <br/>
 
-```mermaid
-flowchart LR
-  A["client"] --> B["Express API · 52 routes"]
-  B --> C["analytics engine"]
-  C --> D["XIRR · Newton–Raphson"]
-  C --> E["500-run Monte-Carlo"]
-  B --> F["vectorless RAG"]
-  F --> G["two-hop tree walk"]
-  G --> H["39-section KB"]
-  D --> I["portfolio projection"]
-  E --> I
-```
+<p align="center">
+  <img src="backend.svg" loading="lazy" width="96%" alt="A client hits the Express API, which drives an analytics engine (XIRR and Monte-Carlo into a projection) and a vectorless RAG path over a 39-section knowledge tree"/>
+</p>
 
 **[MutualMind](https://mutualmind.onrender.com)** *(live)* — full-stack AI mutual-fund advisor, ~**19.7K LOC** across **52 REST endpoints**, pairing a computed financial-analytics engine with an LLM advisory layer.
 
