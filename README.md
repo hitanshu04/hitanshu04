@@ -41,6 +41,13 @@
   <img src="https://img.shields.io/badge/MutualMind-52_REST_endpoints_%C2%B7_~19.7K_LOC-3FB950?style=for-the-badge"/>
 </p>
 
+<!-- ===== HERO — a streaming detection run, drawn to scale from real measured numbers ===== -->
+<p align="center">
+  <img src="stream.svg" width="88%" alt="Terminal: detect-synth streaming an 8 kHz call — waveform with a sweeping playhead, per-chunk scores, a SUSPICIOUS verdict, and p99 151 ms against a 500 ms real-time budget"/>
+</p>
+
+<p align="center"><sub>Every figure above is measured and reproducible — see <a href="https://github.com/hitanshu04/detect-synth"><code>detect-synth</code></a>. The budget bar is drawn to scale.</sub></p>
+
 ---
 
 ## 👋 About Me
@@ -67,27 +74,130 @@ Backend & AI Engineer · B.E. Information Science, '27 · Bengaluru. I care abou
 
 ---
 
-## 🚀 Featured Projects
+## 🚀 What I build — click any node to open it
 
-Every number below is real and public-facing — ask me about any of it in an interview.
+Four capability areas. Each one opens into the real architecture and the measured result.
+Every number is public and reproducible — ask me about any of it in an interview.
 
-| Project | What it is — and the measurable result | Stack |
-|---|---|---|
-| **🎙️ DetectSynth** · [**live**](https://detect-synth.vercel.app) · [repo](https://github.com/hitanshu04/detect-synth) | *Deployed.* Real-time synthetic-voice detection for **8 kHz telephony** — streams 500 ms frames over WebSockets to a CPU-only FastAPI server at **p99 151 ms** against a 500 ms budget. Fusing two **242K-param** LFCC-LCNNs cut EER **24.90% → 20.26%** across **13 attacks never seen in training** (**+4.64 pts**, 95% paired-bootstrap CI **[4.26, 4.99]**, **71,237 utterances**) — the two models fail on *disjoint* attacks, which is why fusion works. Reports the **eval** number, not the flattering dev one. **156 tests / 17 suites.** | `Python` `PyTorch` `FastAPI` `WebSockets` |
-| **🤖 Orchestrate Agent** · [repo](https://github.com/hitanshu04/hackerrank-orchestrate-agent) | *HackerRank Orchestrate Hackathon.* Autonomous support-triage agent on an **8-layer DAG** — hybrid retrieval (vector + BM25) into an LLM, then an **adversarial-critic pass** that blocks ungrounded answers → **93% groundedness** across a **772-doc corpus**. | `Python` `LLMs` `RAG` `BM25` |
-| **🧪 SQLGym** · [repo](https://github.com/hitanshu04/openenv-sql-analyst) | *Hackathon Finalist.* Containerized **OpenEnv-spec** (Meta PyTorch × Hugging Face) RL environment grading LLM agents on SQL via reward-shaped `step()`/`reset()` — **top ~3% of 72,000+**. Audited it **after** selection: the validator built the container but never ran it, so the served API silently failed every query — closed that plus an agent **reward-hacking path** at the engine layer (SQLite authorizer allowlist, derived ground truth), pinned by **33 tests** + container CI. | `Python` `FastAPI` `Docker` `SQLite` |
-| **🎬 Veloce-AI** · [repo](https://github.com/hitanshu04/veloce-ai-v2) | Chat with any YouTube video in real time — RAG over **Pinecone** with **Groq Whisper-v3** transcription and **Llama-3.3-70B**. Beat Groq's **25 MB API cap** by extracting **32 kbps audio-only** streams (**~60% smaller**), unlocking 1 hr+ videos; metadata filtering guarantees **zero cross-talk** between sessions. | `FastAPI` `Next.js` `Pinecone` `Llama-3.3` |
-| **📈 MutualMind** · [live](https://mutualmind.onrender.com) | *Live product.* Full-stack AI mutual-fund advisor — ~**19.7K LOC**, **52 REST endpoints**. Vectorless RAG (two-hop LLM tree-navigation, no vector DB) that killed hallucinated tax rates; XIRR (Newton–Raphson) + **500-run Monte-Carlo** engine; JWT/IDOR-safe auth; CVEs **16 → 3**. | `React` `Node` `Express` `MongoDB` `Gemini` |
+<br/>
 
----
+<details>
+<summary><b>&nbsp;🎙️&nbsp; Voice &amp; Real-Time Systems</b> &nbsp;·&nbsp; <code>p99 151 ms</code> &nbsp;<code>20.26% EER</code> &nbsp;<b>deployed</b></summary>
 
-## 🎬 Watch the reward loop — live, not a mockup
+<br/>
+
+```mermaid
+flowchart LR
+  A["8 kHz call audio"] --> B["500 ms frames"]
+  B --> C{"VAD gate"}
+  C -- silence --> B
+  C -- speech --> D["LFCC features"]
+  D --> E["d42 · LCNN"]
+  D --> F["d62 · LCNN"]
+  E --> G((" fuse "))
+  F --> G
+  G --> H["call verdict"]
+```
+
+**[DetectSynth](https://github.com/hitanshu04/detect-synth)** · **[try it live](https://detect-synth.vercel.app)** — real-time synthetic-voice detection for telephony.
+
+Streams 500 ms frames over WebSockets to a CPU-only FastAPI server at **p99 151 ms** against a **500 ms** real-time budget. Fusing two **242K-param** LFCC-LCNNs cut EER **24.90% → 20.26%** across **13 attacks never seen in training** — **+4.64 points**, 95% paired-bootstrap CI **[4.26, 4.99]**, over **71,237 utterances**.
+
+The two models fail on *disjoint* attacks, which is the reason fusion works rather than a happy accident. I report the **eval** number, not the flattering dev one — dev shares attacks with training. Root-caused a **SIGSEGV** under load to shared mutable model state and took verified concurrency from **3 → 20** sessions. **156 tests across 17 suites.**
+
+`Python` `PyTorch` `FastAPI` `WebSockets` `Docker` `Next.js`
+
+</details>
+
+<details>
+<summary><b>&nbsp;🧪&nbsp; Agent Evaluation &amp; RL Environments</b> &nbsp;·&nbsp; <code>top ~3% of 72,000+</code> &nbsp;<code>33 tests</code></summary>
+
+<br/>
+
+```mermaid
+flowchart LR
+  A["reset(seed)"] --> B["task + schema"]
+  B --> C["agent emits SQL"]
+  C --> D{"SQLite authorizer"}
+  D -- denied --> E["reward −1.0"]
+  D -- allowed --> F["rows"]
+  F --> C
+  C --> G["submit answer"]
+  G --> H{"grader"}
+  H --> I["final score"]
+```
+
+**[SQLGym](https://github.com/hitanshu04/openenv-sql-analyst)** — a containerized **OpenEnv-spec** (Meta PyTorch × Hugging Face) RL environment that grades LLM data-analyst agents on SQL business questions. Selected **top ~3% of 72,000+** at the Meta PyTorch OpenEnv × Scaler hackathon.
+
+Then I audited it *after* it was selected. The validator built the container but never ran it — so the served API silently failed **every** query (`SIGALRM` is main-thread-only; FastAPI runs sync endpoints in a threadpool). I also found an agent **reward-hacking** path: `REPLACE`/`ATTACH` slipped past the regex denylist and could rewrite the data so a wrong answer graded correct.
+
+Both are now closed at the layer that owns the guarantee — a **SQLite authorizer allowlist** instead of a regex, and ground truth **derived from each task's own reference SQL** so it cannot drift. Pinned by **33 tests** and CI that boots the container and asserts over HTTP.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hitanshu04/openenv-sql-analyst/main/docs/demo.gif" width="90%" alt="A scripted agent working through SQLGym: reward shaping per action, a mutation attempt refused by SQLite's own authorizer, and the grader rejecting a hedged answer"/>
+  <img src="https://raw.githubusercontent.com/hitanshu04/openenv-sql-analyst/main/docs/demo.gif" width="94%" alt="A scripted agent stepping through SQLGym: reward shaping per action, a mutation refused by SQLite's authorizer, and the grader rejecting a hedged answer"/>
 </p>
 
-<p align="center"><sub>A scripted agent stepping through <a href="https://github.com/hitanshu04/openenv-sql-analyst"><code>openenv-sql-analyst</code></a> — reward per action, read-only enforcement caught by SQLite itself (not a regex), and seeded replay. No API key, no cherry-picking: <code>python demo.py</code>, reproducible by anyone.</sub></p>
+<sub>Reward per action, read-only enforcement caught by SQLite itself, and seeded replay. No API key, no cherry-picking — <code>python demo.py</code>, reproducible by anyone.</sub>
+
+`Python` `FastAPI` `Docker` `SQLite` `Pydantic` `GitHub Actions`
+
+</details>
+
+<details>
+<summary><b>&nbsp;🔎&nbsp; Retrieval, Grounding &amp; LLM Evals</b> &nbsp;·&nbsp; <code>93% grounded</code> &nbsp;<code>772-doc corpus</code></summary>
+
+<br/>
+
+```mermaid
+flowchart LR
+  A["support ticket"] --> B["hybrid retrieve"]
+  B --> C["vector · ChromaDB"]
+  B --> D["lexical · BM25"]
+  C --> E(("fuse"))
+  D --> E
+  E --> F["LLM drafts answer"]
+  F --> G{"adversarial critic"}
+  G -- ungrounded --> H["blocked"]
+  G -- grounded --> I["response"]
+```
+
+**[Orchestrate Agent](https://github.com/hitanshu04/hackerrank-orchestrate-agent)** — autonomous support-triage agent on an **8-layer DAG**, built for the HackerRank Orchestrate Hackathon. Hybrid retrieval (vector + BM25) feeds an LLM, then a second **adversarial-critic** pass blocks answers that aren't traceable to the corpus → **93% groundedness** across **772 documents**.
+
+**[Veloce-AI](https://github.com/hitanshu04/veloce-ai-v2)** — chat with any YouTube video in real time. RAG over **Pinecone** with **Groq Whisper-v3** and **Llama-3.3-70B**. Beat Groq's **25 MB** upload cap by extracting **32 kbps audio-only** streams (**~60% smaller**), which unlocked hour-long videos; metadata filtering guarantees **zero cross-talk** between sessions.
+
+`Python` `RAG` `ChromaDB` `BM25` `Pinecone` `Llama-3.3` `FastAPI`
+
+</details>
+
+<details>
+<summary><b>&nbsp;⚙️&nbsp; Backend, Quant &amp; Production</b> &nbsp;·&nbsp; <code>52 REST endpoints</code> &nbsp;<code>CVEs 16 → 3</code> &nbsp;<b>live</b></summary>
+
+<br/>
+
+```mermaid
+flowchart LR
+  A["client"] --> B["Express API · 52 routes"]
+  B --> C["analytics engine"]
+  C --> D["XIRR · Newton–Raphson"]
+  C --> E["500-run Monte-Carlo"]
+  B --> F["vectorless RAG"]
+  F --> G["two-hop tree walk"]
+  G --> H["39-section KB"]
+  D --> I["portfolio projection"]
+  E --> I
+```
+
+**[MutualMind](https://mutualmind.onrender.com)** *(live)* — full-stack AI mutual-fund advisor, ~**19.7K LOC** across **52 REST endpoints**, pairing a computed financial-analytics engine with an LLM advisory layer.
+
+**XIRR** via Newton–Raphson root-finding and a **500-run Monte-Carlo** simulator for return projection, pinned by an **83-test** suite covering numerical edge cases. The chatbot uses **vectorless RAG** — a two-hop LLM walk over a 39-section knowledge tree, no vector DB — which eliminated hallucinated tax rates rather than prompting around them. Hardened auth (boot-time JWT validation, IDOR-safe) and took dependency **CVEs from 16 → 3**.
+
+Currently **AI Engineer Intern @ goAI Solutions**, owning multi-tenant model routing end-to-end — policy-based routing, persistent config, and production fallback paths for graceful degradation under upstream failure.
+
+`Node` `Express` `MongoDB` `React` `Gemini` `FastAPI` `PostgreSQL`
+
+</details>
+
+<br/>
 
 ---
 
