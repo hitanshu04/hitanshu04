@@ -75,9 +75,19 @@ Every number below is real and public-facing — ask me about any of it in an in
 |---|---|---|
 | **🎙️ DetectSynth** · [repo](https://github.com/hitanshu04/detect-synth) | Real-time deepfake-voice detector for 8 kHz telephony. Streams **500 ms frames over WebSockets** to a CPU-only FastAPI server. Trained a **242K-param LFCC-LCNN from scratch** on ASVspoof 2019 LA (50K+ utterances) → **16.7% dev EER**. Fixed a silent eval bug (~10-pt EER inflation) and train/serve skew, locked by regression tests. | `Python` `PyTorch` `FastAPI` `WebSockets` |
 | **🤖 Orchestrate Agent** · [repo](https://github.com/hitanshu04/hackerrank-orchestrate-agent) | *HackerRank Orchestrate Hackathon.* Autonomous support-triage agent on an **8-layer DAG** — hybrid retrieval (vector + BM25) into an LLM, then an **adversarial-critic pass** that blocks ungrounded answers → **93% groundedness** across a **772-doc corpus**. | `Python` `LLMs` `RAG` `BM25` |
-| **🧪 SQLGym** · [repo](https://github.com/hitanshu04/openenv-sql-analyst) | *Hackathon Finalist.* Containerized **OpenEnv-spec** (Meta PyTorch × Hugging Face) RL environment that grades LLM data-analyst agents on SQL tasks via a reward-shaped `step()`/`reset()` API, with enterprise DB guardrails behind **4-gate CI validation**. | `Python` `FastAPI` `Docker` `Pydantic` |
+| **🧪 SQLGym** · [repo](https://github.com/hitanshu04/openenv-sql-analyst) | *Hackathon Finalist.* Containerized **OpenEnv-spec** (Meta PyTorch × Hugging Face) RL environment grading LLM agents on SQL via reward-shaped `step()`/`reset()` — **top ~3% of 72,000+**. Audited it **after** selection: the validator built the container but never ran it, so the served API silently failed every query — closed that plus an agent **reward-hacking path** at the engine layer (SQLite authorizer allowlist, derived ground truth), pinned by **33 tests** + container CI. | `Python` `FastAPI` `Docker` `SQLite` |
 | **🎬 Veloce-AI** · [repo](https://github.com/hitanshu04/veloce-ai-v2) | Chat with any YouTube video in real time — RAG over **Pinecone** with **Groq Whisper-v3** transcription and **Llama-3.3-70B**. Beat Groq's **25 MB API cap** by extracting **32 kbps audio-only** streams (**~60% smaller**), unlocking 1 hr+ videos; metadata filtering guarantees **zero cross-talk** between sessions. | `FastAPI` `Next.js` `Pinecone` `Llama-3.3` |
 | **📈 MutualMind** · [live](https://mutualmind.onrender.com) | *Live product.* Full-stack AI mutual-fund advisor — ~**19.7K LOC**, **52 REST endpoints**. Vectorless RAG (two-hop LLM tree-navigation, no vector DB) that killed hallucinated tax rates; XIRR (Newton–Raphson) + **500-run Monte-Carlo** engine; JWT/IDOR-safe auth; CVEs **16 → 3**. | `React` `Node` `Express` `MongoDB` `Gemini` |
+
+---
+
+## 🎬 Watch the reward loop — live, not a mockup
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/hitanshu04/openenv-sql-analyst/main/docs/demo.gif" width="90%" alt="A scripted agent working through SQLGym: reward shaping per action, a mutation attempt refused by SQLite's own authorizer, and the grader rejecting a hedged answer"/>
+</p>
+
+<p align="center"><sub>A scripted agent stepping through <a href="https://github.com/hitanshu04/openenv-sql-analyst"><code>openenv-sql-analyst</code></a> — reward per action, read-only enforcement caught by SQLite itself (not a regex), and seeded replay. No API key, no cherry-picking: <code>python demo.py</code>, reproducible by anyone.</sub></p>
 
 ---
 
