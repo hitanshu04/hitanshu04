@@ -41,12 +41,12 @@
   <img src="https://img.shields.io/badge/MutualMind-52_REST_endpoints_%C2%B7_~19.7K_LOC-3FB950?style=for-the-badge"/>
 </p>
 
-<!-- ===== HERO — a streaming detection run, drawn to scale from real measured numbers ===== -->
+<!-- ===== HERO — the real inference pipeline; nodes resolve, edges draw, data flows ===== -->
 <p align="center">
-  <img src="stream.svg" width="88%" alt="Terminal: detect-synth streaming an 8 kHz call — waveform with a sweeping playhead, per-chunk scores, a SUSPICIOUS verdict, and p99 151 ms against a 500 ms real-time budget"/>
+  <img src="pipeline.svg" width="92%" alt="Architecture diagram: an 8 kHz call is split into 500 ms frames, gated by VAD, converted to LFCC features, scored in parallel by two LCNN models, fused, and turned into a call verdict at p99 151 ms against a 500 ms budget"/>
 </p>
 
-<p align="center"><sub>Every figure above is measured and reproducible — see <a href="https://github.com/hitanshu04/detect-synth"><code>detect-synth</code></a>. The budget bar is drawn to scale.</sub></p>
+<p align="center"><sub>The pipeline behind <a href="https://github.com/hitanshu04/detect-synth"><code>detect-synth</code></a> — a live call becomes a verdict inside a 500 ms budget, on CPU. Every figure is measured and reproducible.</sub></p>
 
 ---
 
