@@ -1,80 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" role="img" width="1000" height="344" viewBox="0 0 1000 344" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" aria-label="Architecture diagram: an 8 kHz call is split into 500 ms frames, gated by VAD, converted to LFCC features, scored in parallel by two LCNN models, fused, and turned into a call verdict at p99 151 milliseconds against a 500 millisecond budget">
-  <title>detect-synth — real-time inference pipeline</title>
-  <desc>Static diagram with progressive reveal. Nodes fade in, edges draw themselves, then a pulse flows along each edge. The finished diagram is the default state.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" role="img" width="1000" height="330" viewBox="0 0 1000 330" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" aria-label="detect-synth · real-time inference pipeline — CPU-only · streaming over WebSocket">
+  <title>detect-synth · real-time inference pipeline</title>
   <style>
-    .edge { fill:none; stroke:#30363d; stroke-width:2; stroke-dashoffset:0;
-             animation: draw .5s ease-out backwards; }
-    @keyframes draw { from { stroke-dashoffset: var(--L, 400); opacity:0; }
-                       to   { stroke-dashoffset: 0; opacity:1; } }
-
-    .flow { fill:none; stroke:#3FB950; stroke-width:2.5; stroke-linecap:round;
-             animation: flow 2.6s linear infinite; }
-    @keyframes flow { from { stroke-dashoffset: 0; }
-                       to   { stroke-dashoffset: -600; } }
-
-    .node { opacity:1; animation: pop .45s cubic-bezier(.2,.8,.2,1) backwards; }
-    @keyframes pop { from { opacity:0; transform: translateY(7px); }
-                      to   { opacity:1; transform: translateY(0); } }
-
-    .lbl { fill:#6e7681; }
-    .out { fill:#8b949e; }
-    .val { fill:#3FB950; font-weight:700; }
-    .cursor { animation: blink 1.15s steps(1,end) infinite; }
-    @keyframes blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
-
-    @media (prefers-reduced-motion: reduce) {
-      .edge, .flow, .node, .cursor { animation: none; }
-    }
+    .edge { stroke-dashoffset:0; animation: draw .55s ease-out backwards; }
+    @keyframes draw { from { stroke-dashoffset: var(--L,400); opacity:0; } to { stroke-dashoffset:0; opacity:1; } }
+    .flow { animation: flow 3s linear infinite; }
+    @keyframes flow { from { stroke-dashoffset:0; } to { stroke-dashoffset:-700; } }
+    .node { opacity:1; animation: pop .5s cubic-bezier(.2,.8,.2,1) backwards; }
+    @keyframes pop { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { .edge,.flow,.node { animation:none; } }
   </style>
-
   <defs>
-    <marker id="arw" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
-      <path d="M0,0 L8,4 L0,8 z" fill="#30363d"/>
-    </marker>
+    <marker id="arw" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse"><path d="M0,0 L8,4 L0,8 z" fill="#30363d"/></marker>
   </defs>
-
-  <rect width="1000" height="344" rx="12" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
-  <rect width="1000" height="42" rx="12" fill="#161b22"/>
-  <rect y="22" width="1000" height="20" fill="#161b22"/>
+  <rect width="1000" height="330" rx="12" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+  <rect width="1000" height="42" rx="12" fill="#161b22"/><rect y="22" width="1000" height="20" fill="#161b22"/>
   <rect y="42" width="1000" height="2" fill="#3FB950"/>
-
-  <text x="24" y="27" font-size="13" class="out" fill="#8b949e">detect-synth <tspan class="lbl" fill="#6e7681">· real-time inference pipeline</tspan></text>
-  <text x="976" y="27" font-size="13" text-anchor="end" class="lbl" fill="#6e7681">CPU-only · streaming over WebSocket</text>
-
-  <g>
-        <path class="edge" d="M143.0,165.0 L169.0,165.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:26.0;stroke-dasharray:26.0;animation-delay:0.35s" marker-end="url(#arw)"/>
-    <path class="edge" d="M324.0,165.0 L350.0,165.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:26.0;stroke-dasharray:26.0;animation-delay:0.46s" marker-end="url(#arw)"/>
-    <path class="edge" d="M463.0,165.0 L489.0,165.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:26.0;stroke-dasharray:26.0;animation-delay:0.57s" marker-end="url(#arw)"/>
-    <path class="edge" d="M567.9,162.7 L605.1,116.6" fill="none" stroke="#30363d" stroke-width="2" style="--L:59.2;stroke-dasharray:59.2;animation-delay:0.68s" marker-end="url(#arw)"/>
-    <path class="edge" d="M567.9,167.3 L605.1,213.4" fill="none" stroke="#30363d" stroke-width="2" style="--L:59.2;stroke-dasharray:59.2;animation-delay:0.79s" marker-end="url(#arw)"/>
-    <path class="edge" d="M729.9,110.3 L767.1,156.4" fill="none" stroke="#30363d" stroke-width="2" style="--L:59.2;stroke-dasharray:59.2;animation-delay:0.90s" marker-end="url(#arw)"/>
-    <path class="edge" d="M729.9,219.7 L767.1,173.6" fill="none" stroke="#30363d" stroke-width="2" style="--L:59.2;stroke-dasharray:59.2;animation-delay:1.01s" marker-end="url(#arw)"/>
-    <path class="edge" d="M843.0,165.0 L869.0,165.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:26.0;stroke-dasharray:26.0;animation-delay:1.12s" marker-end="url(#arw)"/>
-  </g>
-  <g>
-        <path class="flow" d="M143.0,165.0 L169.0,165.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 26.0;animation-delay:0.00s"/>
-    <path class="flow" d="M324.0,165.0 L350.0,165.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 26.0;animation-delay:0.16s"/>
-    <path class="flow" d="M463.0,165.0 L489.0,165.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 26.0;animation-delay:0.32s"/>
-    <path class="flow" d="M567.9,162.7 L605.1,116.6" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 59.2;animation-delay:0.48s"/>
-    <path class="flow" d="M567.9,167.3 L605.1,213.4" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 59.2;animation-delay:0.64s"/>
-    <path class="flow" d="M729.9,110.3 L767.1,156.4" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 59.2;animation-delay:0.80s"/>
-    <path class="flow" d="M729.9,219.7 L767.1,173.6" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 59.2;animation-delay:0.96s"/>
-    <path class="flow" d="M843.0,165.0 L869.0,165.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:16 26.0;animation-delay:1.12s"/>
-  </g>
-  <g>
-        <g class="node" style="animation-delay:0.10s"><rect x="24" y="143" width="116" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="82.0" y="170" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">8 kHz call</text></g>
-    <g class="node" style="animation-delay:0.21s"><rect x="180" y="143" width="141" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="250.5" y="170" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">500 ms frames</text></g>
-    <g class="node" style="animation-delay:0.32s"><rect x="361" y="143" width="99" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="410.5" y="170" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">VAD gate</text></g>
-    <g class="node" style="animation-delay:0.43s"><rect x="500" y="143" width="66" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="533.0" y="170" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">LFCC</text></g>
-    <g class="node" style="animation-delay:0.54s"><rect x="612" y="86" width="116" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="670.0" y="113" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">d42 · LCNN</text></g>
-    <g class="node" style="animation-delay:0.65s"><rect x="612" y="200" width="116" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="670.0" y="227" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">d62 · LCNN</text></g>
-    <g class="node" style="animation-delay:0.76s"><rect x="774" y="143" width="66" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="807.0" y="170" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">fuse</text></g>
-    <g class="node" style="animation-delay:0.87s"><rect x="880" y="143" width="91" height="44" rx="9" fill="#161b22" stroke="#3FB950" stroke-width="1.5"/><text x="925.5" y="170" text-anchor="middle" font-size="14" fill="#3FB950" font-weight="600">verdict</text></g>
-  </g>
-
-  <text x="24" y="300" font-size="13">
-    <tspan class="out" fill="#8b949e">500 ms frames  ·  </tspan><tspan class="val" fill="#3FB950" font-weight="700">242,177</tspan><tspan class="out" fill="#8b949e"> params  ·  p99 </tspan><tspan class="val" fill="#3FB950" font-weight="700">151 ms</tspan><tspan class="out" fill="#8b949e"> against a 500 ms budget  ·  EER </tspan><tspan class="val" fill="#3FB950" font-weight="700">24.90% → 20.26%</tspan><tspan class="out" fill="#8b949e"> across 13 unseen attacks</tspan>
-  </text>
-  <text x="24" y="326" font-size="13"><tspan class="val" fill="#3FB950" font-weight="700">$ </tspan><tspan class="lbl" fill="#6e7681">every figure measured, reproducible, and public</tspan></text>
-  <rect class="cursor" x="392" y="314" width="8" height="15" fill="#3FB950"/>
+  <text x="24" y="27" font-size="13" fill="#8b949e">detect-synth · real-time inference pipeline</text>
+  <text x="976" y="27" font-size="13" text-anchor="end" fill="#6e7681">CPU-only · streaming over WebSocket</text>
+  <g><path class="edge" d="M152.0,175.0 L171.0,175.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:19.0;stroke-dasharray:19.0;animation-delay:0.35s" marker-end="url(#arw)"/><path class="edge" d="M336.0,175.0 L354.0,175.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:18.0;stroke-dasharray:18.0;animation-delay:0.44s" marker-end="url(#arw)"/><path class="edge" d="M476.0,175.0 L495.0,175.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:19.0;stroke-dasharray:19.0;animation-delay:0.53s" marker-end="url(#arw)"/><path class="edge" d="M581.2,172.2 L607.7,110.1" fill="none" stroke="#30363d" stroke-width="2" style="--L:67.5;stroke-dasharray:67.5;animation-delay:0.62s" marker-end="url(#arw)"/><path class="edge" d="M581.2,177.8 L607.7,239.9" fill="none" stroke="#30363d" stroke-width="2" style="--L:67.5;stroke-dasharray:67.5;animation-delay:0.71s" marker-end="url(#arw)"/><path class="edge" d="M738.2,102.7 L765.6,164.9" fill="none" stroke="#30363d" stroke-width="2" style="--L:67.9;stroke-dasharray:67.9;animation-delay:0.80s" marker-end="url(#arw)"/><path class="edge" d="M738.2,247.3 L765.6,185.1" fill="none" stroke="#30363d" stroke-width="2" style="--L:67.9;stroke-dasharray:67.9;animation-delay:0.89s" marker-end="url(#arw)"/><path class="edge" d="M847.0,175.0 L865.0,175.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:18.0;stroke-dasharray:18.0;animation-delay:0.98s" marker-end="url(#arw)"/></g><g><path class="flow" d="M152.0,175.0 L171.0,175.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 19.0;animation-delay:0.00s"/><path class="flow" d="M336.0,175.0 L354.0,175.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 18.0;animation-delay:0.13s"/><path class="flow" d="M476.0,175.0 L495.0,175.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 19.0;animation-delay:0.26s"/><path class="flow" d="M581.2,172.2 L607.7,110.1" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 67.5;animation-delay:0.39s"/><path class="flow" d="M581.2,177.8 L607.7,239.9" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 67.5;animation-delay:0.52s"/><path class="flow" d="M738.2,102.7 L765.6,164.9" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 67.9;animation-delay:0.65s"/><path class="flow" d="M738.2,247.3 L765.6,185.1" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 67.9;animation-delay:0.78s"/><path class="flow" d="M847.0,175.0 L865.0,175.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 18.0;animation-delay:0.91s"/></g><g><g class="node" style="animation-delay:0.10s"><rect x="24" y="153" width="125" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="86.5" y="180" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">8 kHz call</text></g><g class="node" style="animation-delay:0.19s"><rect x="182" y="153" width="151" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="257.5" y="180" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">500 ms frames</text></g><g class="node" style="animation-delay:0.28s"><rect x="365" y="153" width="108" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="419.0" y="180" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">VAD gate</text></g><g class="node" style="animation-delay:0.37s"><rect x="506" y="153" width="74" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="543.0" y="180" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">LFCC</text></g><g class="node" style="animation-delay:0.46s"><rect x="770" y="153" width="74" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="807.0" y="180" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">fuse</text></g><g class="node" style="animation-delay:0.55s"><rect x="876" y="153" width="100" height="44" rx="9" fill="#161b22" stroke="#3FB950" stroke-width="1.5"/><text x="926.0" y="180" text-anchor="middle" font-size="14" fill="#3FB950" font-weight="600">verdict</text></g><g class="node" style="animation-delay:0.64s"><rect x="612" y="78" width="125" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="674.5" y="105" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">d42 · LCNN</text></g><g class="node" style="animation-delay:0.73s"><rect x="612" y="228" width="125" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="674.5" y="255" text-anchor="middle" font-size="14" fill="#e6edf3" font-weight="400">d62 · LCNN</text></g></g>
+  <text x="24" y="306" font-size="13"><tspan fill="#8b949e" font-weight="400">500 ms frames · </tspan><tspan fill="#3FB950" font-weight="700">242,177</tspan><tspan fill="#8b949e" font-weight="400"> params · p99 </tspan><tspan fill="#3FB950" font-weight="700">151 ms</tspan><tspan fill="#8b949e" font-weight="400"> vs a 500 ms budget · EER </tspan><tspan fill="#3FB950" font-weight="700">24.90% → 20.26%</tspan><tspan fill="#8b949e" font-weight="400"> on 13 unseen attacks</tspan></text>
 </svg>
