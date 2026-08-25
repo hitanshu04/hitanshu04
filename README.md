@@ -41,16 +41,24 @@
   <img src="https://img.shields.io/badge/MutualMind-52_REST_endpoints_%C2%B7_~19.7K_LOC-3FB950?style=for-the-badge"/>
 </p>
 
-<!-- ===== HERO — the real inference pipeline; nodes resolve, edges draw, data flows ===== -->
-<p align="center">
-  <img src="pipeline.svg" width="92%" alt="Architecture diagram: an 8 kHz call is split into 500 ms frames, gated by VAD, converted to LFCC features, scored in parallel by two LCNN models, fused, and turned into a call verdict at p99 151 ms against a 500 ms budget"/>
-</p>
-
-<p align="center"><sub>The pipeline behind <a href="https://github.com/hitanshu04/detect-synth"><code>detect-synth</code></a> — a live call becomes a verdict inside a 500 ms budget, on CPU. Every figure is measured and reproducible.</sub></p>
+<p align="center"><sub>⬤&nbsp;&nbsp;<b>session: NOT ESTABLISHED</b>&nbsp; · &nbsp;4 systems registered, edges unresolved</sub></p>
 
 ---
 
-## 👋 About Me
+<details>
+<summary><b><code>POST /session/connect</code></b> &nbsp;&nbsp;<i>— establish session. the graph resolves on open.</i></summary>
+
+<br/>
+
+<p align="center">
+  <img src="graph.svg" loading="lazy" width="94%" alt="Agent-style graph: a request routes to one of four systems — voice realtime, agent evaluation, retrieval RAG, backend API — each converging on production, with a dashed conditional edge that re-enters the router when a regression fails"/>
+</p>
+
+<p align="center"><sub><code>200 OK</code>&nbsp; · &nbsp;session established&nbsp; · &nbsp;four systems reachable — open any node below to inspect it</sub></p>
+
+---
+
+## `GET /identity`
 
 Backend & AI Engineer · B.E. Information Science, '27 · Bengaluru. I care about the parts of software that are hard to fake — **clean APIs, correct data, systems that hold up in production**, and LLM pipelines that are actually *evaluated*, not just demoed. I like owning a problem end-to-end: backend, model, and the interface on top.
 
@@ -61,7 +69,7 @@ Backend & AI Engineer · B.E. Information Science, '27 · Bengaluru. I care abou
 
 ---
 
-## 🛠️ Tech Stack
+## `GET /stack`
 
 | Category | Technologies |
 |---|---|
@@ -74,30 +82,20 @@ Backend & AI Engineer · B.E. Information Science, '27 · Bengaluru. I care abou
 
 ---
 
-## 🚀 What I build — click any node to open it
+## `GET /systems`
 
-Four capability areas. Each one opens into the real architecture and the measured result.
-Every number is public and reproducible — ask me about any of it in an interview.
+Four nodes reachable from the router. Each returns its real architecture and its measured result — every number public and reproducible.
 
 <br/>
 
 <details>
-<summary><b>&nbsp;🎙️&nbsp; Voice &amp; Real-Time Systems</b> &nbsp;·&nbsp; <code>p99 151 ms</code> &nbsp;<code>20.26% EER</code> &nbsp;<b>deployed</b></summary>
+<summary><code>GET /systems/voice</code> &nbsp;—&nbsp; <b>Voice &amp; Real-Time</b> &nbsp;·&nbsp; <code>200</code> <code>p99 151 ms</code> <code>20.26% EER</code></summary>
 
 <br/>
 
-```mermaid
-flowchart LR
-  A["8 kHz call audio"] --> B["500 ms frames"]
-  B --> C{"VAD gate"}
-  C -- silence --> B
-  C -- speech --> D["LFCC features"]
-  D --> E["d42 · LCNN"]
-  D --> F["d62 · LCNN"]
-  E --> G((" fuse "))
-  F --> G
-  G --> H["call verdict"]
-```
+<p align="center">
+  <img src="pipeline.svg" loading="lazy" width="96%" alt="8 kHz call to 500 ms frames to VAD gate to LFCC to two LCNN models in parallel, fused into a call verdict"/>
+</p>
 
 **[DetectSynth](https://github.com/hitanshu04/detect-synth)** · **[try it live](https://detect-synth.vercel.app)** — real-time synthetic-voice detection for telephony.
 
@@ -110,7 +108,7 @@ The two models fail on *disjoint* attacks, which is the reason fusion works rath
 </details>
 
 <details>
-<summary><b>&nbsp;🧪&nbsp; Agent Evaluation &amp; RL Environments</b> &nbsp;·&nbsp; <code>top ~3% of 72,000+</code> &nbsp;<code>33 tests</code></summary>
+<summary><code>GET /systems/agents</code> &nbsp;—&nbsp; <b>Agent Evaluation &amp; RL</b> &nbsp;·&nbsp; <code>200</code> <code>top ~3% of 72,000+</code></summary>
 
 <br/>
 
@@ -144,7 +142,7 @@ Both are now closed at the layer that owns the guarantee — a **SQLite authoriz
 </details>
 
 <details>
-<summary><b>&nbsp;🔎&nbsp; Retrieval, Grounding &amp; LLM Evals</b> &nbsp;·&nbsp; <code>93% grounded</code> &nbsp;<code>772-doc corpus</code></summary>
+<summary><code>GET /systems/retrieval</code> &nbsp;—&nbsp; <b>Retrieval &amp; Grounding</b> &nbsp;·&nbsp; <code>200</code> <code>93% grounded</code></summary>
 
 <br/>
 
@@ -170,7 +168,7 @@ flowchart LR
 </details>
 
 <details>
-<summary><b>&nbsp;⚙️&nbsp; Backend, Quant &amp; Production</b> &nbsp;·&nbsp; <code>52 REST endpoints</code> &nbsp;<code>CVEs 16 → 3</code> &nbsp;<b>live</b></summary>
+<summary><code>GET /systems/backend</code> &nbsp;—&nbsp; <b>Backend, Quant &amp; Production</b> &nbsp;·&nbsp; <code>200</code> <code>52 endpoints</code></summary>
 
 <br/>
 
@@ -198,6 +196,11 @@ Currently **AI Engineer Intern @ goAI Solutions**, owning multi-tenant model rou
 </details>
 
 <br/>
+
+---
+
+
+</details>
 
 ---
 

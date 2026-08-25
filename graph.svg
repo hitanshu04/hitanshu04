@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" width="1000" height="420" viewBox="0 0 1000 420" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace" aria-label="Agent-style graph: a request is routed to one of four systems — voice realtime, agent evaluation, retrieval RAG, or backend API — each feeding production, with a conditional regression edge that re-enters the router">
+  <title>What I build — routed as a graph</title>
+  <desc>Four capability nodes fan out from a router and converge on production, with a dashed conditional edge for regressions. The finished graph is the default state.</desc>
+  <style>
+    .edge { stroke-dashoffset:0; animation: draw .55s ease-out backwards; }
+    @keyframes draw { from { stroke-dashoffset: var(--L,400); opacity:0; }
+                       to   { stroke-dashoffset: 0; opacity:1; } }
+    .flow { animation: flow 3s linear infinite; }
+    @keyframes flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -700; } }
+    .node { opacity:1; animation: pop .5s cubic-bezier(.2,.8,.2,1) backwards; }
+    @keyframes pop { from { opacity:0; transform: translateY(8px); }
+                      to   { opacity:1; transform: translateY(0); } }
+    .loop { stroke-dashoffset:0; animation: loopdash 2.4s linear infinite; }
+    @keyframes loopdash { from { stroke-dashoffset:0; } to { stroke-dashoffset:-44; } }
+    @media (prefers-reduced-motion: reduce) {
+      .edge, .flow, .node, .loop { animation: none; }
+    }
+  </style>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" fill="#30363d"/>
+    </marker>
+    <marker id="arwd" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" fill="#6e7681"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="420" rx="12" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+  <rect width="1000" height="42" rx="12" fill="#161b22"/>
+  <rect y="22" width="1000" height="20" fill="#161b22"/>
+  <rect y="42" width="1000" height="2" fill="#3FB950"/>
+  <text x="24" y="27" font-size="13" fill="#8b949e">graph <tspan fill="#6e7681">· 4 systems registered · edges resolved at connect</tspan></text>
+  <text x="976" y="27" font-size="13" text-anchor="end" fill="#6e7681">state: ACTIVE</text>
+
+  <g>
+        <path class="edge" d="M60.0,212.0 L73.0,212.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:13.0;stroke-dasharray:13.0;animation-delay:0.30s" marker-end="url(#arw)"/>
+    <path class="edge" d="M201.8,209.6 L283.4,100.8" fill="none" stroke="#30363d" stroke-width="2" style="--L:136.0;stroke-dasharray:136.0;animation-delay:0.55s" marker-end="url(#arw)"/>
+    <path class="edge" d="M202.7,210.8 L279.9,176.5" fill="none" stroke="#30363d" stroke-width="2" style="--L:84.5;stroke-dasharray:84.5;animation-delay:0.64s" marker-end="url(#arw)"/>
+    <path class="edge" d="M202.7,213.2 L279.9,247.5" fill="none" stroke="#30363d" stroke-width="2" style="--L:84.5;stroke-dasharray:84.5;animation-delay:0.73s" marker-end="url(#arw)"/>
+    <path class="edge" d="M201.8,214.4 L283.4,323.2" fill="none" stroke="#30363d" stroke-width="2" style="--L:136.0;stroke-dasharray:136.0;animation-delay:0.82s" marker-end="url(#arw)"/>
+    <path class="edge" d="M601.9,94.3 L693.0,203.5" fill="none" stroke="#30363d" stroke-width="2" style="--L:142.2;stroke-dasharray:142.2;animation-delay:1.00s" marker-end="url(#arw)"/>
+    <path class="edge" d="M602.8,173.1 L689.8,207.9" fill="none" stroke="#30363d" stroke-width="2" style="--L:93.7;stroke-dasharray:93.7;animation-delay:1.09s" marker-end="url(#arw)"/>
+    <path class="edge" d="M602.8,250.9 L689.8,216.1" fill="none" stroke="#30363d" stroke-width="2" style="--L:93.7;stroke-dasharray:93.7;animation-delay:1.18s" marker-end="url(#arw)"/>
+    <path class="edge" d="M601.9,329.7 L693.0,220.5" fill="none" stroke="#30363d" stroke-width="2" style="--L:142.2;stroke-dasharray:142.2;animation-delay:1.27s" marker-end="url(#arw)"/>
+    <path class="edge" d="M839.0,212.0 L878.0,212.0" fill="none" stroke="#30363d" stroke-width="2" style="--L:39.0;stroke-dasharray:39.0;animation-delay:1.45s" marker-end="url(#arw)"/>
+  </g>
+
+  <path class="loop" d="M768,236 C768,352 600,384 455,384 C310,384 142,352 142,236" fill="none" stroke="#6e7681" stroke-width="1.6"
+        stroke-dasharray="7 7" marker-end="url(#arwd)"/>
+  <text x="455" y="404" font-size="12" text-anchor="middle" fill="#6e7681">regression fails · re-enter</text>
+
+  <g>
+        <path class="flow" d="M60.0,212.0 L73.0,212.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 13.0;animation-delay:0.00s"/>
+    <path class="flow" d="M201.8,209.6 L283.4,100.8" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 136.0;animation-delay:0.30s"/>
+    <path class="flow" d="M202.7,210.8 L279.9,176.5" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 84.5;animation-delay:0.37s"/>
+    <path class="flow" d="M202.7,213.2 L279.9,247.5" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 84.5;animation-delay:0.44s"/>
+    <path class="flow" d="M201.8,214.4 L283.4,323.2" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 136.0;animation-delay:0.51s"/>
+    <path class="flow" d="M601.9,94.3 L693.0,203.5" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 142.2;animation-delay:0.75s"/>
+    <path class="flow" d="M602.8,173.1 L689.8,207.9" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 93.7;animation-delay:0.82s"/>
+    <path class="flow" d="M602.8,250.9 L689.8,216.1" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 93.7;animation-delay:0.89s"/>
+    <path class="flow" d="M601.9,329.7 L693.0,220.5" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 142.2;animation-delay:0.96s"/>
+    <path class="flow" d="M839.0,212.0 L878.0,212.0" fill="none" stroke="#3FB950" stroke-width="2.5" stroke-linecap="round" style="stroke-dasharray:14 39.0;animation-delay:1.15s"/>
+  </g>
+  <g>
+        <g class="node" style="animation-delay:0.10s"><circle cx="44" cy="212" r="13" fill="#161b22" stroke="#30363d" stroke-width="1.5"/></g>
+    <g class="node" style="animation-delay:0.22s"><rect x="84" y="190" width="116" height="44" rx="9" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="142.0" y="217" text-anchor="middle" font-size="14" fill="#e6edf3">route</text></g>
+    <g class="node" style="animation-delay:0.42s"><rect x="290" y="64" width="310" height="56" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="308" y="89" font-size="14" fill="#e6edf3" font-weight="600">voice.realtime</text><text x="308" y="109" font-size="12" fill="#3FB950">p99 151 ms · 20.26% EER</text></g>
+    <g class="node" style="animation-delay:0.53s"><rect x="290" y="144" width="310" height="56" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="308" y="169" font-size="14" fill="#e6edf3" font-weight="600">agents.eval</text><text x="308" y="189" font-size="12" fill="#3FB950">top ~3% of 72,000+ · 33 tests</text></g>
+    <g class="node" style="animation-delay:0.64s"><rect x="290" y="224" width="310" height="56" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="308" y="249" font-size="14" fill="#e6edf3" font-weight="600">retrieval.rag</text><text x="308" y="269" font-size="12" fill="#3FB950">93% grounded · 772 docs</text></g>
+    <g class="node" style="animation-delay:0.75s"><rect x="290" y="304" width="310" height="56" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5"/><text x="308" y="329" font-size="14" fill="#e6edf3" font-weight="600">backend.api</text><text x="308" y="349" font-size="12" fill="#3FB950">52 endpoints · CVEs 16 → 3</text></g>
+    <g class="node" style="animation-delay:0.92s"><rect x="700" y="190" width="136" height="44" rx="9" fill="#161b22" stroke="#3FB950" stroke-width="1.5"/><text x="768.0" y="217" text-anchor="middle" font-size="14" fill="#3FB950" font-weight="600">production</text></g>
+    <g class="node" style="animation-delay:1.05s"><circle cx="902" cy="212" r="13" fill="#161b22" stroke="#3FB950" stroke-width="1.5"/><circle cx="902" cy="212" r="6" fill="#3FB950"/></g>
+  </g>
+</svg>
