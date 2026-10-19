@@ -108,7 +108,7 @@ The two models fail on *disjoint* attacks, which is the reason fusion works rath
 </details>
 
 <details>
-<summary><code>GET /systems/agents</code> &nbsp;—&nbsp; <b>Agent Evaluation &amp; RL</b> &nbsp;·&nbsp; <code>200</code> <code>top ~3% of 72,000+</code></summary>
+<summary><code>GET /systems/agents</code> &nbsp;—&nbsp; <b>Agent Evaluation &amp; RL</b> &nbsp;·&nbsp; <code>200</code> <code>top ~3% of 72,000+</code> <code>288 cheat rules</code></summary>
 
 <br/>
 
@@ -116,17 +116,17 @@ The two models fail on *disjoint* attacks, which is the reason fusion works rath
   <img src="agents.svg" loading="lazy" width="96%" alt="Episode loop: a seeded reset hands the agent a task, every query passes the SQLite authorizer, and the grader scores the submitted answer"/>
 </p>
 
-**[SQLGym](https://github.com/hitanshu04/openenv-sql-analyst)** — a containerized **OpenEnv-spec** (Meta PyTorch × Hugging Face) RL environment that grades LLM data-analyst agents on SQL business questions. Selected **top ~3% of 72,000+** at the Meta PyTorch OpenEnv × Scaler hackathon.
+**[SQLGym](https://github.com/hitanshu04/openenv-sql-analyst)** — a containerized **OpenEnv-spec** (Meta PyTorch × Hugging Face) RL environment that grades LLM data-analyst agents on **14 SQL business tasks**. v1 was selected **top ~3% of 72,000+** at the Meta PyTorch OpenEnv × Scaler hackathon.
 
-Then I audited it *after* it was selected. The validator built the container but never ran it — so the served API silently failed **every** query (`SIGALRM` is main-thread-only; FastAPI runs sync endpoints in a threadpool). I also found an agent **reward-hacking** path: `REPLACE`/`ATTACH` slipped past the regex denylist and could rewrite the data so a wrong answer graded correct.
+Then I treated my own grader as the thing most likely to be wrong. The first audit found the served API failed **every** query (`SIGALRM` is main-thread-only) and a **reward-hacking** path where `REPLACE`/`ATTACH` could rewrite the data. Now a **cheat suite** of scripted cheaters attacks the grader on every commit (**288 rules**); its first run found **10 more exploits** — a guess-list `0 1 2 … 45` out-scored an honest agent. Every answer is computed twice: by reference SQL and by an independent Python oracle.
 
-Both are now closed at the layer that owns the guarantee — a **SQLite authorizer allowlist** instead of a regex, and ground truth **derived from each task's own reference SQL** so it cannot drift. Pinned by **33 tests** and CI that boots the container and asserts over HTTP.
+Benchmarked **7 free models** (Claude, Gemini, gpt-oss, Qwen) over **230 recorded episodes**: on the dirty-data tasks, 4 of them failed every run — only Claude Sonnet 5.5 passed.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/hitanshu04/openenv-sql-analyst/main/docs/demo.gif" width="94%" alt="A scripted agent stepping through SQLGym: reward shaping per action, a mutation refused by SQLite's authorizer, and the grader rejecting a hedged answer"/>
+  <img src="https://raw.githubusercontent.com/hitanshu04/openenv-sql-analyst/main/docs/demo.gif" width="94%" alt="python demo.py: a full episode with its reward trace, a mutation refused by SQLite's authorizer, and the grader rejecting guess-lists and unchecked answers"/>
 </p>
 
-<sub>Reward per action, read-only enforcement caught by SQLite itself, and seeded replay. No API key, no cherry-picking — <code>python demo.py</code>, reproducible by anyone.</sub>
+<sub>A full episode with its reward trace, read-only enforcement, and the grader rejecting guess-lists and unchecked answers. No API key, no cherry-picking — <code>python demo.py</code>, reproducible by anyone.</sub>
 
 `Python` `FastAPI` `Docker` `SQLite` `Pydantic` `GitHub Actions`
 
